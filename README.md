@@ -4,7 +4,7 @@ A 5-stage pipelined CPU implementing the RV32I instruction set architecture in V
 
 DEBUGGING JOURNEY :-
 
-1) The pc and instructions are not updating, due to my previous experience with muon detector I knew there could be a problem with the delay so I set the delay to #10000, still  got no significant results.
+1) The pc and instructions were not updating, due to my previous experience with muon detector I knew there could be a problem with the delay so I set the delay to #10000, still  got no significant results.
 
 2)Then I created testbench for each stage to check where my pc is getting stuck ,, 
          IF stage -- passed .
