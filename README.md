@@ -12,13 +12,6 @@ DEBUGGING JOURNEY :-
 Now after checking these two I thought, if these 2 stages are working independently then why my PC and instr are showing xxxxx in final output when I use it with my topmodule and final testbench.  That means the problem is not in the individual stages itself rather it’s a silly small mistake that I am making which is stopping the pc update.
 
 3) I printed the stall ,clock and other parameters in testbench to check their functioning and found that stall = x , stall was not getting any value.  So I temporary removed the hazard unit completely from top module and testbench and assign stall = 0 to force the output,, and see what --- woahhlaaa --- I got my PC and instr output from each stage 
-Pipeline Signals:
-# IF Stage - PC: 00000024, Instr: 00602023
-# ID Stage - PC: 00000020, Instr: 00002303
-# EX Stage - PC: 0000001c, Instr: 00712063
-# MEM Stage - PC: 00000018, Instr: 00128393
-# WB Stage - PC: 00000014, Instr: 0051b333
-
 But the register files are still 00000000.
  
 THAT means my hazard logic is not good and I need to improve it…. 
