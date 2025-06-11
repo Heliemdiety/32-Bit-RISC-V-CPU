@@ -48,19 +48,31 @@ This project aims to implement a 5-stage pipelined RISC-V RV32I CPU core in Veri
 
 2. Current Implemented Functionality
 The CPU core successfully implements the following:
+
 5-Stage Pipeline: All five stages (IF, ID, EX, MEM, WB) are instantiated and connected.
+
 Pipeline Registers: if_id_reg, id_ex_reg, ex_mem_reg, and mem_wb_reg are in place, correctly latching data and control signals between stages.
+
 PC Management: Program Counter (PC) incrementing and basic branch/jump target calculation.
+
 Instruction Fetch (IF) Stage: Fetches instructions from instruction memory.
+
 Instruction Decode (ID) Stage: Decodes RV32I instruction opcodes, funct3, funct7.
 Generates immediate values (I, S, B, U, J types).
 Reads operand data from the Register File.
+
 Control Unit: Generates all necessary control signals for subsequent pipeline stages based on the instruction opcode.
+
 Execute (EX) Stage:Performs ALU operations.Calculates branch targets.Forwarding Unit: Implements data forwarding from EX/MEM and MEM/WB stages to resolve data hazards.
+
 Memory Access (MEM) Stage:Handles load and store operations with external data memory interface.
+
 Write Back (WB) Stage: Writes results back to the Register File.
+
 Register File: A 32-entry, 32-bit register file with two read ports and one write port.
+
 Hazard Detection Unit: Detects data hazards (load-use) and control hazards (branches/jumps) and generates stall and flush signals.
+
 Observations on Functionality:Based on simulation logs, R-type (e.g., add, sub), I-type (e.g., addi), and U-type (e.g., auipc) instructions appear to be executing and writing results to the register file correctly, demonstrating the successful flow of data through the pipeline and the effective operation of ALU and forwarding.
 
 3. Identified Critical Problem: MemWriteEn Discrepancy
@@ -86,9 +98,14 @@ This strongly indicates an anomaly or bug within the ModelSim simulator environm
 
 
 6. Key Learnings from this Debugging Process
+
 Methodical Debugging: The importance of systematically tracing signals, identifying contradictions, and using targeted debug prints ($display statements) at different levels of hierarchy.
+
 Isolation Testing: The power of isolating individual modules to verify their correctness in a controlled environment, proving or disproving internal logic errors.
+
 Understanding Pipeline Flow: Deepened understanding of how control signals and data propagate through a pipelined CPU.
+
 Hazard Detection: Gained experience in implementing and debugging hazard detection logic.
+
 Simulator Anomalies: Learning that sometimes, the problem lies outside the code itself, requiring consideration of the development environment.
 
