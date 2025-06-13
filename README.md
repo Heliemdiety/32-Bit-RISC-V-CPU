@@ -1,45 +1,6 @@
 # 32-Bit-RISC-V-CPU
 A 5-stage pipelined CPU implementing the RV32I instruction set architecture in Verilog. This project features a classic pipeline (IF, ID, EX, MEM, WB), a full register file, ALU, control unit, and advanced hazard detection with data forwarding. 
 
-
-DEBUGGING JOURNEY :-
-
-1) The pc and instructions were not updating. Due to my previous experience with muon detector, I suspected there could be a problem with the delay, so I set the delay to #10000. Still, I got no significant results.
-
-2)Then I created testbench for each stage to check where my pc is getting stuck, 
-IF stage -- passed,
-Id stage -- passed 
-Now after confirming these two I wondered, if these 2 stages are working independently then why my PC and instr are still showing xxxxx in final output when I use it with my topmodule and final testbench. That meant the problem was not in the individual stages.
-
-3) I printed the stall, clock and other parameters in testbench to check their functioning and found that stall = x. Stall was not getting any value.  So I temporarily removed the hazard unit completely from top module and testbench, force assigned stall = 0, to get some output and  --- woahhlaaa --- I got my PC and instr output from each stage .
-But the register files are still 00000000.
- 
-THAT means my hazard logic is not good and I need to improve it…. 
-	
-4)  Created a tb for WB stage to check the register issues .. Wb stage is working fine seperately and is generating register values. 
-5) Wrote the code again from scratch ,, but still the register file = 0 ….. 
-
-
-6))Created an entirely new version with new wires. One issue I noted was I was using same wires to drive multiple inputs/outputs. After using separating them, I am able  to get register values ,PC,Instructions etc.
-Analysis of the Latest Simulation Log
-identified that x1, x2, x3, and x4 are getting their correct values, which means the Instruction Fetch, Decode, Execute, and Register File write-back stages are working correctly for basic arithmetic instructions.
-
-7)) common problems I am facing --
-port mismatching ,, eg,-- connecting 2 bit ports with 1 bit port.
-Not handling the wire connection whenever I am declaring the new wire 
-
-
-8)) Since I know register 1 to 5 are having values I am sure that pipeline stages are working properly. I can see that data memory is not holding anything in my simulation. So basically the problem might be in the data memory.
-My memwrite_en is also 0 for all the cycles , so no data is being written, to solve this I added debug statements to  check whether the hazard unit is interfering. These debug logs confirmed stall and flush were functioning as expected.
-
-9)) The problem is not due to hazard unit, I can see that at time 11500 my memwrite_en is 1 as input ,, but 0 as output..
-I have explicitly assigned the output value equal to Input.
-The only way for Input MemWriteEn=1 to result in Output MemWriteEn=0 when Stall=0 and Flush=0 is either modelSim is not working properly here or I am too dumb to understand it further.
-
-10 ))For one last try I ran a testbench for ID-EX stage separately, and it worked fine as expected.
-
-
-
 RISC-V RV32I Pipelined CPU Core 
 Date: June 11, 2025
 
@@ -108,4 +69,41 @@ Understanding Pipeline Flow: Deepened understanding of how control signals and d
 Hazard Detection: Gained experience in implementing and debugging hazard detection logic.
 
 Simulator Anomalies: Learning that sometimes, the problem lies outside the code itself, requiring consideration of the development environment.
+
+
+DEBUGGING JOURNEY :-
+
+1) The pc and instructions were not updating. Due to my previous experience with muon detector, I suspected there could be a problem with the delay, so I set the delay to #10000. Still, I got no significant results.
+
+2)Then I created testbench for each stage to check where my pc is getting stuck, 
+IF stage -- passed,
+Id stage -- passed 
+Now after confirming these two I wondered, if these 2 stages are working independently then why my PC and instr are still showing xxxxx in final output when I use it with my topmodule and final testbench. That meant the problem was not in the individual stages.
+
+3) I printed the stall, clock and other parameters in testbench to check their functioning and found that stall = x. Stall was not getting any value.  So I temporarily removed the hazard unit completely from top module and testbench, force assigned stall = 0, to get some output and  --- woahhlaaa --- I got my PC and instr output from each stage .
+But the register files are still 00000000.
+ 
+THAT means my hazard logic is not good and I need to improve it…. 
+	
+4)  Created a tb for WB stage to check the register issues .. Wb stage is working fine seperately and is generating register values. 
+5) Wrote the code again from scratch ,, but still the register file = 0 ….. 
+
+
+6))Created an entirely new version with new wires. One issue I noted was I was using same wires to drive multiple inputs/outputs. After using separating them, I am able  to get register values ,PC,Instructions etc.
+Analysis of the Latest Simulation Log
+identified that x1, x2, x3, and x4 are getting their correct values, which means the Instruction Fetch, Decode, Execute, and Register File write-back stages are working correctly for basic arithmetic instructions.
+
+7)) common problems I am facing --
+port mismatching ,, eg,-- connecting 2 bit ports with 1 bit port.
+Not handling the wire connection whenever I am declaring the new wire 
+
+
+8)) Since I know register 1 to 5 are having values I am sure that pipeline stages are working properly. I can see that data memory is not holding anything in my simulation. So basically the problem might be in the data memory.
+My memwrite_en is also 0 for all the cycles , so no data is being written, to solve this I added debug statements to  check whether the hazard unit is interfering. These debug logs confirmed stall and flush were functioning as expected.
+
+9)) The problem is not due to hazard unit, I can see that at time 11500 my memwrite_en is 1 as input ,, but 0 as output..
+I have explicitly assigned the output value equal to Input.
+The only way for Input MemWriteEn=1 to result in Output MemWriteEn=0 when Stall=0 and Flush=0 is either modelSim is not working properly here or I am too dumb to understand it further.
+
+10 ))For one last try I ran a testbench for ID-EX stage separately, and it worked fine as expected.
 
