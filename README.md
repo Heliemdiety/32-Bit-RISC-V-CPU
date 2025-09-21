@@ -36,17 +36,10 @@ Semantics: rd ← |rs1 - rs2| (signed)
 
 Purpose: Accelerates the calculation of heuristic functions, such as the Manhattan distance (|x1 - x2| + |y1 - y2|), which is a critical bottleneck in A search* and other pathfinding algorithms.
 
-🔬 Performance Results
-A rigorous, kernel-level analysis was performed to evaluate the performance of the custom instructions against optimized branching and branchless software baselines. The projected speedups, based on a cycle-accurate model of the pipeline (P=2), are significant.
-
-Kernel	                Baseline Implementation        	Custom ISA Cycles	  Projected Speedup
-Prim's Algorithm	    5-Cycle Branchless	                   1	              5.0x
-A Heuristic*	        11-Cycle Branching                     3	              3.67x
-Dijkstra's Algorithm	6-Cycle Branchless	                   2	              3.0x
 
 Additionally, the custom instructions provide a 3x reduction in static code size for the A* kernel, improving instruction cache efficiency in memory-constrained embedded systems.
 
-📝 Publication
+📝 Publicationc : 
 Independent research paper submitted to IEEE INDICON 2025 (Under Review). The architecture, analytical model, and performance results of this project were detailed in a full research paper.
 
 Title: Accelerating Graph Traversal Kernels with a Versatile, Lightweight RISC-V ISA Extension
