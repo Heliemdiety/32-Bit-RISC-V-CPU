@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps // Define timescale for simulation
+`timescale 1ns / 1ps 
 
 module riscv_cpu_tb;
 
@@ -154,13 +154,13 @@ module riscv_cpu_tb;
             $display("  x%0d (reg[%0d]): 0x%H", i, i, uut_cpu.reg_file_inst.registers[i]);
         end
 
-        // Print a portion of Data Memory
-        $display("\n--------------------------------------------------------------------------------");
-        $display("First 16 Words of Data Memory:");
-        for (i = 0; i < 16; i = i + 1) begin
-            $display("  DMEM[0x%H]: 0x%H", i * 4, uut_dmem.dmem[i]);
-        end
-        $display("--------------------------------------------------------------------------------");
+        // // Print a portion of Data Memory
+        // $display("\n--------------------------------------------------------------------------------");
+        // $display("First 16 Words of Data Memory:");
+        // for (i = 0; i < 16; i = i + 1) begin
+        //     $display("  DMEM[0x%H]: 0x%H", i * 4, uut_dmem.dmem[i]);
+        // end
+        // $display("--------------------------------------------------------------------------------");
 
         $finish; // End simulation
     end
